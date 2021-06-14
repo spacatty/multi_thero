@@ -12,6 +12,9 @@ Serverless structure w/
 
 ## Application
 
+- Select one:
+  - [ ] [Vuetify](https://vuetifyjs.com/en/getting-started/installation/)
+  - [ ] [Vuesax](https://vuesax.com/docs/components/)
 
 ### Layout
 
