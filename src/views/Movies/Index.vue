@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
