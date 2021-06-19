@@ -5,6 +5,8 @@ import Music from "../views/Music/Index.vue";
 import Books from "../views/Books/Index.vue";
 import Podcasts from "../views/Podcasts/Index.vue";
 import Cinema from "../views/Cinema/Index.vue";
+import Series from "../views/Series/Index.vue";
+import Movies from "../views/Movies/Index.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +35,16 @@ const routes = [
     path: "/cinema",
     name: "Cinema",
     component: Cinema,
+  },
+  {
+    path: "/series",
+    name: "Series",
+    component: Series,
+  },
+  {
+    path: "/movies",
+    name: "Movies",
+    component: Movies,
   },
 ];
 
