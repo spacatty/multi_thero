@@ -17,35 +17,35 @@
           :active="active == 'podcasts'"
           id="podcasts"
         >
-          <router-link class="router_link" to="/">Подкасты</router-link>
+          <router-link class="router_link" to="/podcasts">Подкасты</router-link>
         </vs-navbar-item>
         <vs-navbar-item
           class="navigation_item"
           :active="active == 'books'"
           id="books"
         >
-          <router-link class="router_link" to="/">Аудиокниги</router-link>
+          <router-link class="router_link" to="/books">Аудиокниги</router-link>
         </vs-navbar-item>
         <vs-navbar-item
           class="navigation_item"
           :active="active == 'video'"
           id="video"
         >
-          <router-link class="router_link" to="/">Видео</router-link>
+          <router-link class="router_link" to="/movies">Видео</router-link>
         </vs-navbar-item>
         <vs-navbar-item
           class="navigation_item"
           :active="active == 'cinema'"
           id="cinema"
         >
-          <router-link class="router_link" to="/">Кино</router-link>
+          <router-link class="router_link" to="/cinema">Кино</router-link>
         </vs-navbar-item>
         <vs-navbar-item
           class="navigation_item"
           :active="active == 'series'"
           id="series"
         >
-          <router-link class="router_link" to="/">Сериалы</router-link>
+          <router-link class="router_link" to="/series">Сериалы</router-link>
         </vs-navbar-item>
         <template #right>
           <vs-navbar-group>

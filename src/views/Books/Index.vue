@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <section class="line" v-for="artist in musicData" :key="artist.artistName">
+    <section class="line" v-for="artist in booksData" :key="artist.artistName">
       <h2>{{ artist.artistName }}</h2>
       <div class="line_card_group">
         <vs-card
@@ -19,7 +19,7 @@
               Lorem ipsum dolor sit amet consectetur, adipisicing elit.
             </p>
             <p>Жанр: {{ release.primaryGenreName }}</p>
-            <p>Альбом: {{ release.collectionName }}</p>
+            <p>Коллекция: {{ release.collectionName }}</p>
           </template>
           <template #title>
             <h3>{{ release.trackName }}</h3>
@@ -65,29 +65,28 @@ h2 {
   min-height: 10em;
   position: relative;
 }
+
+.audio_player {
+  width: 100% !important;
+  background: none !important;
+}
 </style>
 
 <script>
 const musicians = [
-  "BEZDNA STADA",
-  "MF Doom",
-  "OHASCHI",
-  "Mujuice",
-  "Nirvana",
-  "Maneskin",
-  "070 Shake",
-  "12 Gauge",
-  "2 Chainz",
-  "2 Pistols",
-  "White Stripes",
-  "OFFMI",
-  "Imagine Dragons",
+  "Pat Nakamoto",
+  "Mark Jobs",
+  "Jacques Ellul",
+  "Terri Favro",
+  "Steve Alverson",
+  "Jordan Pittman",
+  "Steve Tudor",
 ];
 export default {
-  name: "Music",
+  name: "Books",
   data() {
     return {
-      musicData: [],
+      booksData: [],
     };
   },
   methods: {
@@ -102,12 +101,12 @@ export default {
       this.$axios
         .get(
           `https://itunes.apple.com/search?term=${m.split` `
-            .join`+`}&limit=25&entity=song&attribute=allArtistTerm`
+            .join`+`}&limit=25&entity=audiobook&attribute=authorTerm`
         )
         .then((r) => {
           r.data.results.map((d) => tr.push(d));
         });
-      this.musicData.push({ artistName: m, artistData: tr });
+      this.booksData.push({ artistName: m, artistData: tr });
     });
   },
 };

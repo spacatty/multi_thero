@@ -1,6 +1,10 @@
 <template>
   <div class="content">
-    <section class="line" v-for="artist in musicData" :key="artist.artistName">
+    <section
+      class="line"
+      v-for="artist in podcastsData"
+      :key="artist.artistName"
+    >
       <h2>{{ artist.artistName }}</h2>
       <div class="line_card_group">
         <vs-card
@@ -19,7 +23,7 @@
               Lorem ipsum dolor sit amet consectetur, adipisicing elit.
             </p>
             <p>Жанр: {{ release.primaryGenreName }}</p>
-            <p>Альбом: {{ release.collectionName }}</p>
+            <p>Коллекция: {{ release.collectionName }}</p>
           </template>
           <template #title>
             <h3>{{ release.trackName }}</h3>
@@ -65,29 +69,29 @@ h2 {
   min-height: 10em;
   position: relative;
 }
+
+.audio_player {
+  width: 100% !important;
+  background: none !important;
+}
 </style>
 
 <script>
 const musicians = [
-  "BEZDNA STADA",
-  "MF Doom",
-  "OHASCHI",
-  "Mujuice",
-  "Nirvana",
-  "Maneskin",
-  "070 Shake",
-  "12 Gauge",
-  "2 Chainz",
-  "2 Pistols",
-  "White Stripes",
-  "OFFMI",
-  "Imagine Dragons",
+  "The Hockey Podcast Network",
+  "Hockey Royalty Podcast",
+  "Travis Mewhirter",
+  "Duolingo",
+  "Lars Behrenroth",
+  "Edward Russell",
+  "The Our Strange Skies Podcast Archive",
+  "Year of Polygamy Podcast",
 ];
 export default {
-  name: "Music",
+  name: "Podcasts",
   data() {
     return {
-      musicData: [],
+      podcastsData: [],
     };
   },
   methods: {
@@ -102,12 +106,12 @@ export default {
       this.$axios
         .get(
           `https://itunes.apple.com/search?term=${m.split` `
-            .join`+`}&limit=25&entity=song&attribute=allArtistTerm`
+            .join`+`}&limit=25&entity=podcast&attribute=authorTerm`
         )
         .then((r) => {
           r.data.results.map((d) => tr.push(d));
         });
-      this.musicData.push({ artistName: m, artistData: tr });
+      this.podcastsData.push({ artistName: m, artistData: tr });
     });
   },
 };

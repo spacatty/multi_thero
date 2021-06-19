@@ -7,22 +7,18 @@
 - [ ] Present?
 
 Serverless structure w/
-`Firebase?`
-?
+`OAUTH + EXPRESS + MONGO`
 
 ## Application
 
-- Select one:
-  - [ ] [Vuetify](https://vuetifyjs.com/en/getting-started/installation/)
-  - [ ] [Vuesax](https://vuesax.com/docs/components/)
+- UI:
+  - [x] [Vuesax](https://vuesax.com/docs/components/)
 
 ### Layout
 
 - [ ] Layout
-  - [ ] Navigation
-    - [ ] Services dropdown
-    - [ ] Conditional service navigation?
-  - [ ] Color schema
+  - [x] Navigation
+  - [ ] Dark/Lght
 
 ---
 
@@ -36,28 +32,21 @@ https://itunes.apple.com/search?term=seven+nation+army&entity=song&limit=1
 
 #### Music
 
-- [ ] Card
+- [x] Card
 - [ ] Full view
-  - [ ] Preview player (Audio)
   - [ ] Meta
-  - [ ] Recommendatioins?
-  - [ ] Artist data?
 
 #### Podcasts
 
-- [ ] Card
+- [x] Card
 - [ ] Full view
-  - [ ] Preview player (Audio)
   - [ ] Meta
-  - [ ] Recommendatioins?
 
 #### Audiobooks
 
-- [ ] Card
+- [x] Card
 - [ ] Full view
-  - [ ] Preview player (Audio)
   - [ ] Meta
-  - [ ] Recommendatioins?
 
 ---
 
@@ -70,19 +59,25 @@ https://itunes.apple.com/search?term=seven+nation+army&entity=song&limit=1
 https://developers.themoviedb.org/3/tv-episodes/get-tv-episode-details
 ```
 
+### Series
+
+- [x] Card
+- [ ] Full view
+  - [ ] Trailer player
+  - [ ] Meta
+
+#### Cinema
+
+- [x] Card
+- [ ] Full view
+  - [ ] Trailer player
+  - [ ] Meta
+
 #### Movies
 
 - [ ] Card
 - [ ] Full view
   - [ ] YT-VIDEO
-  - [ ] Meta
-  - [ ] Recommendatioins?
-
-#### Cinema
-
-- [ ] Card
-- [ ] Full view
-  - [ ] Trailer player
   - [ ] Meta
   - [ ] Recommendatioins?
 
