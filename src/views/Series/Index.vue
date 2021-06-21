@@ -4,7 +4,7 @@
       Open Dialog
     </vs-button> -->
     <section class="line" v-for="(genre, genreIndex) in genres" :key="genre.id">
-      <h2>{{ genre.name }} | {{ genreIndex }}</h2>
+      <h2>{{ genre.name }}</h2>
       <div class="line_card_group">
         <div v-for="(movie, movieIndex) in genre.series" :key="movie.id">
           <vs-card
@@ -25,7 +25,7 @@
               <p style="display: none">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
               </p>
-              <p>Жанр: {{ movie.genre_ids.join(" ") }} | {{ movieIndex }}</p>
+              <p>Жанр: {{ movie.genre_ids.join(" ") }}</p>
               <!-- <p>Альбом: {{ release.collectionName }}</p> -->
             </template>
             <template #title>
@@ -57,74 +57,13 @@
             <div class="con-content">
               <h4>Whats is Vuesax?</h4>
               <p>
-                Vuesax (pronounced / vjusacksː /, as view sacks) is a framework
-                of UI components created with Vuejs to make projects easily and
-                with a unique and pleasant style, vuesax is created from scratch
-                and designed for all types of developers from the frontend lover
-                to the backend who wants to easily create their visual approach
-                to the end-user We are focused on streamlining the work of the
-                programmer by giving components created in their entirety and
-                with independent customization and very easy to implement, so
-                creativity is in our hands but we do not neglect that each
-                project is different both visually and in its ecosystem Vuesax
-                does not have a design line such as other component frameworks
-                based on Material Design, we believe that there are already
-                emaciated frameworks that look visually and in UI / UX and we
-                don't want to be one more of the bunch, apart from that we love
-                to create and design new experiences and surprise you with new
-                elements or details that we can only do by being visually free.
+                {{ movie.castData }}
               </p>
 
               <h4>Why Vuesax?</h4>
 
               <p>
-                Vuesax is a relatively new framework with a refreshing design
-                and in the latest trends, vuesax based on vuejs which means that
-                we go hand in hand with one of the most popular javascript
-                frameworks in the world and with a huge community with which you
-                will have all the help and documentation to create and make your
-                project
-                <br />
-                <br />
-                - Vuesax, unlike many frameworks, is designed from scratch and
-                we are not anchored to any design line, this is something great
-                since your project is going to be unique and very different from
-                the others
-
-                <br />
-                <br />
-                - We are focused on the quick and easy creation of projects
-                giving a beautiful visual line but without forgetting the
-                personalization and independence of the developer
-
-                <br />
-                <br />
-                - Vuesax uses native css variables for better customization and
-                production changes such as changing to dark theme or changing
-                the main color of the entire application with few javascript
-                lines
-                <br />
-                <br />
-
-                - Vuesax is a frame designed to have a great visual impact and
-                that is always in trend with respect to design.
-                <br />
-                <br />
-
-                - An open-source community to create, improve and correct any
-                component or function.
-                <br />
-                <br />
-
-                - Independent components to avoid importing unnecessary code.
-                <br />
-                <br />
-
-                - Markdown documents for better sustainability.
-                <br />
-                <br />
-
-                - and much more.
+                {{ movie.metaData }}
               </p>
             </div>
           </vs-dialog>
@@ -153,8 +92,25 @@ export default {
       let c = new Date(d);
       return `${c.getDate()}/${c.getMonth() + 1}/${c.getFullYear()}`;
     },
-    test(x) {
-      console.log(x);
+    async getMovieCast(mID) {
+      try {
+        const r = await axios.get(
+          `https://api.themoviedb.org/3/tv/${mID}/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU`
+        );
+        return r.data;
+      } catch (error) {
+        return error;
+      }
+    },
+    async getMovieMeta(mID) {
+      try {
+        const r = await axios.get(
+          `https://api.themoviedb.org/3/tv/${mID}?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU`
+        );
+        return r.data;
+      } catch (error) {
+        return error;
+      }
     },
   },
   created() {
@@ -168,6 +124,12 @@ export default {
         let z = [];
         r.data.results.forEach((p) => {
           try {
+            Promise.resolve(
+              this.getMovieCast(p.id).then((x) => (p.castData = x))
+            );
+            Promise.resolve(
+              this.getMovieMeta(p.id).then((x) => (p.metaData = x))
+            );
             let obj = new Object();
             obj[`${p.id}`] = false;
             z.push(obj);
@@ -186,6 +148,12 @@ export default {
         let y = [];
         x.data.results.forEach((p) => {
           try {
+            Promise.resolve(
+              this.getMovieCast(p.id).then((x) => (p.castData = x))
+            );
+            Promise.resolve(
+              this.getMovieMeta(p.id).then((x) => (p.metaData = x))
+            );
             let obj = new Object();
             obj[`${p.id}`] = false;
             y.push(obj);
@@ -221,7 +189,7 @@ h2 {
 }
 
 .vs-card__img {
-  max-height: 400px !important;
+  max-height: 340px !important;
 }
 
 .line {

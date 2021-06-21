@@ -61,6 +61,19 @@ https://developers.themoviedb.org/3/tv-episodes/get-tv-episode-details
 
 ### Series
 
+META
+
+```
+https://api.themoviedb.org/3/tv/84958?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+```
+
+CAST
+
+```
+https://api.themoviedb.org/3/tv/84958/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+
+```
+
 - [x] Card
 - [ ] Full view
   - [ ] Trailer player
@@ -68,17 +81,40 @@ https://developers.themoviedb.org/3/tv-episodes/get-tv-episode-details
 
 #### Cinema
 
+META
+
+```
+https://api.themoviedb.org/3/movie/497819?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+```
+
+CAST
+
+```
+https://api.themoviedb.org/3/movie/637649/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=en-EN
+```
+
 - [x] Card
 - [ ] Full view
   - [ ] Trailer player
   - [ ] Meta
 
+```
+no cross-req required
+```
+
 #### Movies
 
-- [ ] Card
+- [x] Card
 - [ ] Full view
   - [ ] YT-VIDEO
   - [ ] Meta
   - [ ] Recommendatioins?
 
 ---
+
+# !!!
+
+- [ ] State mgmt
+- [ ] OAUTH + EXPRESS + MONGO
+- [ ] Card line: fetch multiple pages
+- [ ] FAVS

@@ -1,10 +1,17 @@
 <template>
   <div class="content">
-    <section class="line" v-for="genre in genres" :key="genre.id">
+    <section class="line" v-for="(genre, genreIndex) in genres" :key="genre.id">
       <h2>{{ genre.name }}</h2>
       <div class="line_card_group">
-        <div v-for="movie in genre.movies" :key="movie.id">
-          <vs-card v-if="movie.poster_path !== null" class="line_card">
+        <div v-for="(movie, movieIndex) in genre.movies" :key="movie.id">
+          <vs-card
+            @click="
+              dialogs.data[genreIndex][movieIndex][movie.id] =
+                !dialogs.data[genreIndex][movieIndex][movie.id]
+            "
+            v-if="movie.poster_path !== null"
+            class="line_card"
+          >
             <template #img>
               <img
                 :src="`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}`"
@@ -33,6 +40,30 @@
               </vs-button>
             </template>
           </vs-card>
+          <vs-dialog
+            scroll
+            overflow-hidden
+            blur
+            not-close
+            auto-width
+            v-model="dialogs.data[genreIndex][movieIndex][movie.id]"
+          >
+            <template #header>
+              <h3>{{ movie.name }}</h3>
+            </template>
+            <div class="con-content">
+              <h4>Whats is Vuesax?</h4>
+              <p>
+                {{ movie.castData }}
+              </p>
+
+              <h4>Why Vuesax?</h4>
+
+              <p>
+                {{ movie.metaData }}
+              </p>
+            </div>
+          </vs-dialog>
         </div>
       </div>
     </section>
@@ -48,12 +79,35 @@ export default {
     return {
       genres: [],
       movies: [],
+      dialogs: {
+        data: [],
+      },
     };
   },
   methods: {
     fmtDate(d) {
       let c = new Date(d);
       return `${c.getDate()}/${c.getMonth() + 1}/${c.getFullYear()}`;
+    },
+    async getMovieCast(mID) {
+      try {
+        const r = await axios.get(
+          `https://api.themoviedb.org/3/movie/${mID}/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU`
+        );
+        return r.data;
+      } catch (error) {
+        return error;
+      }
+    },
+    async getMovieMeta(mID) {
+      try {
+        const r = await axios.get(
+          `https://api.themoviedb.org/3/movie/${mID}?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU`
+        );
+        return r.data;
+      } catch (error) {
+        return error;
+      }
     },
   },
   created() {
@@ -68,8 +122,25 @@ export default {
               `https://api.themoviedb.org/3/discover/movie?with_genres=${g.id}&sort_by=release_date.desc&api_key=${API_KEY}`
             )
             .then((x) => {
+              let delta = [];
               g.movies = x.data.results;
               this.genres.push(g);
+              x.data.results.forEach((z) => {
+                try {
+                  Promise.resolve(
+                    this.getMovieCast(z.id).then((y) => (z.castData = y))
+                  );
+                  Promise.resolve(
+                    this.getMovieMeta(z.id).then((y) => (z.metaData = y))
+                  );
+                  let obj = new Object();
+                  obj[`${z.id}`] = false;
+                  delta.push(obj);
+                } catch (error) {
+                  console.log(`ERR: `, error);
+                }
+              });
+              this.dialogs.data.push(delta);
             });
         });
       });
