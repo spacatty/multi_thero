@@ -93,6 +93,11 @@ CAST
 https://api.themoviedb.org/3/movie/637649/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=en-EN
 ```
 
+TRAILER ?v-if video?
+```
+https://api.themoviedb.org/3/movie/637649/videos?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+```
+
 - [x] Card
 - [ ] Full view
   - [ ] Trailer player
