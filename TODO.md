@@ -16,9 +16,9 @@ Serverless structure w/
 
 ### Layout
 
-- [ ] Layout
+- [x] Layout
   - [x] Navigation
-  - [ ] Dark/Lght
+  - [ ] ?Dark/Lght
 
 ---
 
@@ -33,20 +33,21 @@ https://itunes.apple.com/search?term=seven+nation+army&entity=song&limit=1
 #### Music
 
 - [x] Card
-- [ ] Full view
-  - [ ] Meta
+- [x] Dialog
+- [ ] Style dialog
 
 #### Podcasts
 
 - [x] Card
-- [ ] Full view
-  - [ ] Meta
+- [ ] Dialog
+- [ ] Style dialog
+- [ ] ?Only lookup
 
 #### Audiobooks
 
 - [x] Card
-- [ ] Full view
-  - [ ] Meta
+- [x] Dialog
+- [ ] Style dialog
 
 ---
 
@@ -75,9 +76,9 @@ https://api.themoviedb.org/3/tv/84958/credits?api_key=52217232f795bbefbb1b7c951a
 ```
 
 - [x] Card
-- [ ] Full view
+- [x] Dialog
   - [ ] Trailer player
-  - [ ] Meta
+- [ ] Style dialog
 
 #### Cinema
 
@@ -94,14 +95,15 @@ https://api.themoviedb.org/3/movie/637649/credits?api_key=52217232f795bbefbb1b7c
 ```
 
 TRAILER ?v-if video?
+
 ```
 https://api.themoviedb.org/3/movie/637649/videos?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
 ```
 
 - [x] Card
-- [ ] Full view
+- [x] Dialog
   - [ ] Trailer player
-  - [ ] Meta
+- [ ] Style dialog
 
 ```
 no cross-req required
@@ -110,9 +112,9 @@ no cross-req required
 #### Movies
 
 - [x] Card
-- [ ] Full view
+- [x] Dialog
   - [ ] YT-VIDEO
-  - [ ] Meta
+- [ ] Style dialog
   - [ ] Recommendatioins?
 
 ---

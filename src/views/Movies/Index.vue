@@ -1,46 +1,75 @@
 <template>
   <div class="pageContent">
     <div class="container">
-      <vs-card v-for="movie in movies" :key="movie.id" class="line_card">
-        <template #img>
-          <img
-            :src="
-              movie.snippet.thumbnails.standard !== undefined
-                ? movie.snippet.thumbnails.standard.url
-                : `https://content.architecting.it/wp-images/su_p2fg_featured_o.jpg`
-            "
-            alt=""
-          />
-        </template>
-        <template #text>
-          <p style="display: none">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          </p>
-          <p>Канал: {{ movie.snippet.channelTitle }}</p>
-          <p>Дата: {{ fmtDate(movie.snippet.publishedAt) }}</p>
-          <!-- <p>Альбом: {{ release.collectionName }}</p> -->
-        </template>
-        <template #title>
-          <h3>
-            {{
-              movie.snippet.title.length > 24
-                ? `${movie.snippet.title.substring(0, 25)}...`
-                : movie.snippet.title
-            }}
-          </h3>
-        </template>
-        <!-- <template #buttons>
-           
-          </template> -->
-        <template #interactions>
-          <vs-button danger icon>
-            {{ movie.statistics.likeCount }}
-          </vs-button>
-          <vs-button class="btn-chat" shadow primary>
-            {{ movie.statistics.viewCount }}
-          </vs-button>
-        </template>
-      </vs-card>
+      <div v-for="(movie, movieIndex) in movies" :key="movie.id">
+        <vs-card
+          class="line_card"
+          @click="
+            dialogs.data[movieIndex][movie.id] =
+              !dialogs.data[movieIndex][movie.id]
+          "
+        >
+          <template #img>
+            <img
+              :src="
+                movie.snippet.thumbnails.standard !== undefined
+                  ? movie.snippet.thumbnails.standard.url
+                  : `https://content.architecting.it/wp-images/su_p2fg_featured_o.jpg`
+              "
+              alt=""
+            />
+          </template>
+          <template #text>
+            <p style="display: none">
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            </p>
+            <p>Канал: {{ movie.snippet.channelTitle }}</p>
+            <p>Дата: {{ fmtDate(movie.snippet.publishedAt) }}</p>
+            <!-- <p>Альбом: {{ release.collectionName }}</p> -->
+          </template>
+          <template #title>
+            <h3>
+              {{
+                movie.snippet.title.length > 24
+                  ? `${movie.snippet.title.substring(0, 25)}...`
+                  : movie.snippet.title
+              }}
+            </h3>
+          </template>
+          <!-- <template #buttons>
+        
+            </template> -->
+          <template #interactions>
+            <vs-button danger icon>
+              {{ movie.statistics.likeCount }}
+            </vs-button>
+            <vs-button class="btn-chat" shadow primary>
+              {{ movie.statistics.viewCount }}
+            </vs-button>
+          </template>
+        </vs-card>
+        <vs-dialog
+          scroll
+          overflow-hidden
+          blur
+          not-close
+          auto-width
+          v-model="dialogs.data[movieIndex][movie.id]"
+        >
+          <template #header>
+            <h3>{{ movie.snippet.title }}</h3>
+          </template>
+          <div class="con-content">
+            <p>{{ movie.snippet.description }}</p>
+            <p>
+              {{ movie.snippet.publishedAt }}
+            </p>
+            <p>
+              {{ movie.statistics }}
+            </p>
+          </div>
+        </vs-dialog>
+      </div>
     </div>
     <vs-button
       v-if="nextPageToken"
@@ -61,6 +90,9 @@ export default {
   data() {
     return {
       movies: [],
+      dialogs: {
+        data: [],
+      },
       nextPageToken: null,
     };
   },
@@ -79,9 +111,18 @@ export default {
           }`
         )
         .then((r) => {
+          let delta = [];
           r.data.items.map((e) => {
-            this.movies.push(e);
+            try {
+              let obj = new Object();
+              obj[`${e.id}`] = false;
+              delta.push(obj);
+              this.movies.push(e);
+            } catch (error) {
+              console.log(`ERR: `, error);
+            }
           });
+          this.dialogs.data = delta;
           this.nextPageToken = r.data.nextPageToken;
         });
     },

@@ -1,41 +1,70 @@
 <template>
   <div class="content">
-    <section class="line" v-for="artist in booksData" :key="artist.artistName">
+    <section
+      class="line"
+      v-for="(artist, artistIndex) in booksData"
+      :key="artist.artistName"
+    >
       <h2>{{ artist.artistName }}</h2>
       <div class="line_card_group">
-        <vs-card
-          class="line_card"
-          v-for="release in artist.artistData"
-          :key="release.trackId"
+        <div
+          v-for="(release, releaseIndex) in artist.artistData"
+          :key="release.collectionId"
         >
-          <template #img>
-            <img
-              :src="release.artworkUrl100.replace('100x100', '1000x1000')"
-              alt=""
-            />
-          </template>
-          <template #text>
-            <p style="display: none">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            </p>
-            <p>Жанр: {{ release.primaryGenreName }}</p>
-            <p>Коллекция: {{ release.collectionName }}</p>
-          </template>
-          <template #title>
-            <h3>{{ release.trackName }}</h3>
-          </template>
-          <!-- <template #buttons>
-           
-          </template> -->
-          <template #interactions>
-            <vs-button v-if="release.contentAdvisoryRating" danger icon>
-              {{ release.contentAdvisoryRating }}
-            </vs-button>
-            <vs-button class="btn-chat" shadow primary>
-              <span class="span">{{ fmtDate(release.releaseDate) }}</span>
-            </vs-button>
-          </template>
-        </vs-card>
+          <vs-card
+            class="line_card"
+            @click="
+              dialogs.data[artistIndex][releaseIndex][release.collectionId] =
+                !dialogs.data[artistIndex][releaseIndex][release.collectionId]
+            "
+          >
+            <template #img>
+              <img
+                :src="release.artworkUrl100.replace('100x100', '1000x1000')"
+                alt=""
+              />
+            </template>
+            <template #text>
+              <p style="display: none">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+              </p>
+              <p>Жанр: {{ release.primaryGenreName }}</p>
+              <p>Коллекция: {{ release.collectionName }}</p>
+            </template>
+            <template #title>
+              <h3>{{ release.trackName }}</h3>
+            </template>
+            <!-- <template #buttons>
+          
+            </template> -->
+            <template #interactions>
+              <vs-button v-if="release.contentAdvisoryRating" danger icon>
+                {{ release.contentAdvisoryRating }}
+              </vs-button>
+              <vs-button class="btn-chat" shadow primary>
+                <span class="span">{{ fmtDate(release.releaseDate) }}</span>
+              </vs-button>
+            </template>
+          </vs-card>
+          <vs-dialog
+            scroll
+            overflow-hidden
+            blur
+            not-close
+            auto-width
+            v-model="
+              dialogs.data[artistIndex][releaseIndex][release.collectionId]
+            "
+          >
+            <template #header>
+              <h3>{{ release.collectionName }}</h3>
+            </template>
+            <div class="con-content">
+              <p v-html="release.description"></p>
+              <p>{{ release.copyright }}</p>
+            </div>
+          </vs-dialog>
+        </div>
       </div>
     </section>
   </div>
@@ -55,7 +84,8 @@ h2 {
 
 .line_card {
   display: inline-block;
-  min-width: fit-content;
+  width: fit-content;
+  min-width: 330px;
   margin: 0 1em;
   text-align: left;
 }
@@ -64,11 +94,6 @@ h2 {
   min-width: 100vw;
   min-height: 10em;
   position: relative;
-}
-
-.audio_player {
-  width: 100% !important;
-  background: none !important;
 }
 </style>
 
@@ -87,6 +112,9 @@ export default {
   data() {
     return {
       booksData: [],
+      dialogs: {
+        data: [],
+      },
     };
   },
   methods: {
@@ -96,16 +124,24 @@ export default {
     },
   },
   created() {
+    let xd = [];
     musicians.forEach((m) => {
       let tr = [];
+      let delta = [];
       this.$axios
         .get(
           `https://itunes.apple.com/search?term=${m.split` `
             .join`+`}&limit=25&entity=audiobook&attribute=authorTerm`
         )
         .then((r) => {
-          r.data.results.map((d) => tr.push(d));
+          r.data.results.map((d) => {
+            let obj = new Object();
+            obj[`${d.collectionId}`] = false;
+            delta.push(obj);
+            tr.push(d);
+          });
         });
+      this.dialogs.data.push(delta);
       this.booksData.push({ artistName: m, artistData: tr });
     });
   },

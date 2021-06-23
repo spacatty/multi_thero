@@ -2,44 +2,79 @@
   <div class="content">
     <section
       class="line"
-      v-for="artist in podcastsData"
+      v-for="(artist, artistIndex) in podcastsData"
       :key="artist.artistName"
     >
       <h2>{{ artist.artistName }}</h2>
       <div class="line_card_group">
-        <vs-card
-          class="line_card"
-          v-for="release in artist.artistData"
+        <div
+          v-for="(release, releaseIndex) in artist.artistData"
           :key="release.trackId"
         >
-          <template #img>
-            <img
-              :src="release.artworkUrl100.replace('100x100', '1000x1000')"
-              alt=""
-            />
-          </template>
-          <template #text>
-            <p style="display: none">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-            </p>
-            <p>Жанр: {{ release.primaryGenreName }}</p>
-            <p>Коллекция: {{ release.collectionName }}</p>
-          </template>
-          <template #title>
-            <h3>{{ release.trackName }}</h3>
-          </template>
-          <!-- <template #buttons>
-           
-          </template> -->
-          <template #interactions>
-            <vs-button v-if="release.contentAdvisoryRating" danger icon>
-              {{ release.contentAdvisoryRating }}
-            </vs-button>
-            <vs-button class="btn-chat" shadow primary>
-              <span class="span">{{ fmtDate(release.releaseDate) }}</span>
-            </vs-button>
-          </template>
-        </vs-card>
+          <vs-card
+            @click="
+              dialogs.data[artistIndex][releaseIndex][release.collectionId] =
+                !dialogs.data[artistIndex][releaseIndex][release.collectionId]
+            "
+            class="line_card"
+          >
+            <template #img>
+              <img
+                :src="release.artworkUrl100.replace('100x100', '1000x1000')"
+                alt=""
+              />
+            </template>
+            <template #text>
+              <p style="display: none">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+              </p>
+              <p>Жанр: {{ release.primaryGenreName }}</p>
+              <p>Коллекция: {{ release.collectionName }}</p>
+            </template>
+            <template #title>
+              <h3>{{ release.trackName }}</h3>
+            </template>
+            <!-- <template #buttons>
+          
+            </template> -->
+            <template #interactions>
+              <vs-button v-if="release.contentAdvisoryRating" danger icon>
+                {{ release.contentAdvisoryRating }}
+              </vs-button>
+              <vs-button class="btn-chat" shadow primary>
+                <span class="span">{{ fmtDate(release.releaseDate) }}</span>
+              </vs-button>
+            </template>
+          </vs-card>
+          <vs-dialog
+            scroll
+            overflow-hidden
+            blur
+            not-close
+            auto-width
+            v-model="
+              dialogs.data[artistIndex][releaseIndex][release.collectionId]
+            "
+          >
+            <template #header>
+              <h3>
+                {{ release.artistName }} - {{ release.collectionName }} -
+                {{ release.primaryGenreName }}
+              </h3>
+            </template>
+            <div class="con-content">
+              <p>
+                {{ release.genres.join(" ") }}
+              </p>
+
+              <h4>Episodes</h4>
+
+              <p>
+                {{ release.episodesData }}
+              </p>
+            </div>
+          </vs-dialog>
+        </div>
       </div>
     </section>
   </div>
@@ -59,7 +94,8 @@ h2 {
 
 .line_card {
   display: inline-block;
-  min-width: fit-content;
+  width: fit-content;
+  min-width: 330px;
   margin: 0 1em;
   text-align: left;
 }
@@ -77,7 +113,7 @@ h2 {
 </style>
 
 <script>
-const musicians = [
+const podcasters = [
   "The Hockey Podcast Network",
   "Hockey Royalty Podcast",
   "Travis Mewhirter",
@@ -92,6 +128,9 @@ export default {
   data() {
     return {
       podcastsData: [],
+      dialogs: {
+        data: [],
+      },
     };
   },
   methods: {
@@ -99,18 +138,34 @@ export default {
       let c = new Date(d);
       return `${c.getDate()}/${c.getMonth() + 1}/${c.getFullYear()}`;
     },
+    async listEpisodes(z) {
+      const r = await this.$axios.get(
+        `https://itunes.apple.com/lookup?id=${z}&country=US&media=podcast&entity=podcastEpisode&limit=100`
+      );
+      return r.data;
+    },
   },
   created() {
-    musicians.forEach((m) => {
+    podcasters.forEach((m) => {
       let tr = [];
+      let delta = [];
       this.$axios
         .get(
           `https://itunes.apple.com/search?term=${m.split` `
             .join`+`}&limit=25&entity=podcast&attribute=authorTerm`
         )
         .then((r) => {
-          r.data.results.map((d) => tr.push(d));
+          r.data.results.forEach((d) => {
+            Promise.resolve(this.listEpisodes(d.collectionId)).then(
+              (y) => (d.episodesData = y)
+            );
+            let obj = new Object();
+            obj[`${d.collectionId}`] = false;
+            delta.push(obj);
+            tr.push(d);
+          });
         });
+      this.dialogs.data.push(delta);
       this.podcastsData.push({ artistName: m, artistData: tr });
     });
   },
