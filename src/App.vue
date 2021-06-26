@@ -48,26 +48,28 @@
           <router-link class="router_link" to="/series">Сериалы</router-link>
         </vs-navbar-item>
         <template #right>
-          <vs-navbar-group>
+          <vs-button
+            v-if="authStatus === false"
+            transparent
+            @click="triggerAuth()"
+            >Авторизация</vs-button
+          >
+          <vs-navbar-group v-if="authStatus === true">
             <vs-avatar
               badge-color="danger"
               size="64"
               badge
               badge-position="top-right"
             >
-              <img
-                src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2020/05/01/08/avatar-sigourney-weaver.jpg?width=1200&auto=webp&quality=75"
-                alt=""
-              />
-              <template #badge> 28 </template>
+              <img :src="userPhoto" alt="avatar" />
+              <!-- <template #badge> 28 </template> -->
             </vs-avatar>
-
             <template #items class="hello">
-              <h5 class="title">Юзернейм</h5>
-              <vs-navbar-item :active="active == 'favorite'" id="favorite">
+              <h5 class="title">{{ userName.split(" ")[0] }}</h5>
+              <!-- <vs-navbar-item :active="active == 'favorite'" id="favorite">
                 Избранное
-              </vs-navbar-item>
-              <vs-navbar-item :active="active == 'logout'" id="logout">
+              </vs-navbar-item> -->
+              <vs-navbar-item @click="triggerLogOut()">
                 Выход
               </vs-navbar-item>
             </template>
@@ -88,6 +90,28 @@ export default {
       active: "home",
       activeSidebar: false,
     };
+  },
+  computed: {
+    authStatus() {
+      return this.$store.getters.getAuth;
+    },
+    userProfile() {
+      return this.$store.getters.getUser;
+    },
+    userPhoto() {
+      return this.$store.getters.getUserPhoto;
+    },
+    userName() {
+      return this.$store.getters.getUserName;
+    },
+  },
+  methods: {
+    triggerAuth() {
+      this.$store.dispatch("authUser", { vm: this });
+    },
+    triggerLogOut() {
+      this.$store.dispatch("logoutUser", { vm: this });
+    },
   },
 };
 </script>

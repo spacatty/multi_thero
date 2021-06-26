@@ -1,7 +1,7 @@
 import Vue from "vue";
 import "./plugins/axios";
 import "./plugins/vuesax";
-import "./plugins/player";
+import "./plugins/oauth";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";

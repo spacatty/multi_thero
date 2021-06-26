@@ -39,7 +39,7 @@ https://itunes.apple.com/search?term=seven+nation+army&entity=song&limit=1
 #### Podcasts
 
 - [x] Card
-- [ ] Dialog
+- [X] Dialog
 - [ ] Style dialog
 - [ ] ?Only lookup
 
@@ -65,13 +65,13 @@ https://developers.themoviedb.org/3/tv-episodes/get-tv-episode-details
 META
 
 ```
-https://api.themoviedb.org/3/tv/84958?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+https://api.themoviedb.org/3/tv/84958?api_key=0&language=ru-RU
 ```
 
 CAST
 
 ```
-https://api.themoviedb.org/3/tv/84958/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+https://api.themoviedb.org/3/tv/84958/credits?api_key=0&language=ru-RU
 
 ```
 
@@ -85,19 +85,19 @@ https://api.themoviedb.org/3/tv/84958/credits?api_key=52217232f795bbefbb1b7c951a
 META
 
 ```
-https://api.themoviedb.org/3/movie/497819?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+https://api.themoviedb.org/3/movie/497819?api_key=0&language=ru-RU
 ```
 
 CAST
 
 ```
-https://api.themoviedb.org/3/movie/637649/credits?api_key=52217232f795bbefbb1b7c951aae98ad&language=en-EN
+https://api.themoviedb.org/3/movie/637649/credits?api_key=0&language=en-EN
 ```
 
 TRAILER ?v-if video?
 
 ```
-https://api.themoviedb.org/3/movie/637649/videos?api_key=52217232f795bbefbb1b7c951aae98ad&language=ru-RU
+https://api.themoviedb.org/3/movie/637649/videos?api_key=0&language=ru-RU
 ```
 
 - [x] Card
@@ -122,6 +122,8 @@ no cross-req required
 # !!!
 
 - [ ] State mgmt
-- [ ] OAUTH + EXPRESS + MONGO
+  - [x] USER
+  - [ ] DATA
+- [x] OAUTH + EXPRESS + MONGO
 - [ ] Card line: fetch multiple pages
 - [ ] FAVS
