@@ -29,24 +29,15 @@ export default new Vuex.Store({
       }
       let user = googleUser.getBasicProfile();
       let keys = Object.keys(user);
-      let r = await vm.$axios.post("http://localhost:8080/auth/serialize", {
+      let r = await vm.$axios.post("/auth/serialize", {
         googleID: user[keys[0]],
         userData: user,
       });
-      // vm.$q.notify({
-      //   color: "green",
-      //   message: "Log in пройдена успешно.",
-      //   icon: "check",
-      // });
       commit("setUser", { user, keys, au: true });
     },
     async logoutUser({ commit }, { vm }) {
       await vm.$gAuth.signOut();
-      // vm.$q.notify({
-      //   color: "green",
-      //   message: "Log out произведён успешно.",
-      //   icon: "check",
-      // });
+      vm.$router.push("/");
       commit("resetUser");
     },
   },

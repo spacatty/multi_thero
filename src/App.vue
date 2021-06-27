@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <div class="center examplex">
-      <vs-navbar center-collapsed fixed v-model="active" class="navigation">
+      <vs-navbar
+        v-if="authStatus === true"
+        center-collapsed
+        fixed
+        v-model="active"
+        class="navigation"
+      >
         <template #left>
           <img src="/logo2.png" alt="" />
         </template>
@@ -52,7 +58,7 @@
             v-if="authStatus === false"
             transparent
             @click="triggerAuth()"
-            >Log in</vs-button
+            >Sign in</vs-button
           >
           <vs-navbar-group v-if="authStatus === true">
             <vs-avatar
@@ -70,7 +76,7 @@
                 Избранное
               </vs-navbar-item> -->
               <vs-navbar-item @click="triggerLogOut()">
-                Log out
+                Sign out
               </vs-navbar-item>
             </template>
           </vs-navbar-group>
