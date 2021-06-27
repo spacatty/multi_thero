@@ -30,10 +30,13 @@ export default new Vuex.Store({
       let user = googleUser.getBasicProfile();
       let keys = Object.keys(user);
       try {
-        let r = await vm.$axios.post("http://localhost:8080/auth/serialize", {
-          googleID: user[keys[0]],
-          userData: user,
-        });
+        let r = await vm.$axios.post(
+          "https://protected-fjord-58865.herokuapp.com/auth/serialize",
+          {
+            googleID: user[keys[0]],
+            userData: user,
+          }
+        );
         console.log(r);
         commit("setUser", { user, keys, au: true });
       } catch (error) {
