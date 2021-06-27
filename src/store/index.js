@@ -29,11 +29,16 @@ export default new Vuex.Store({
       }
       let user = googleUser.getBasicProfile();
       let keys = Object.keys(user);
-      let r = await vm.$axios.post("/auth/serialize", {
-        googleID: user[keys[0]],
-        userData: user,
-      });
-      commit("setUser", { user, keys, au: true });
+      try {
+        let r = await vm.$axios.post("http://localhost:8080/auth/serialize", {
+          googleID: user[keys[0]],
+          userData: user,
+        });
+        console.log(r);
+        commit("setUser", { user, keys, au: true });
+      } catch (error) {
+        console.log(error);
+      }
     },
     async logoutUser({ commit }, { vm }) {
       await vm.$gAuth.signOut();
