@@ -71,7 +71,6 @@ h2 {
 const musicians = [
   "LP",
   "Wildways",
-  "Linkin Park",
   "50 cent",
 
 ];
